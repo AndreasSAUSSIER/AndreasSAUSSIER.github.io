@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* =============================================
-           VARIABLES — modifie ici pour changer les couleurs
+           VARIABLES
         ============================================= */
         :root {
             --bg:         #212122;
@@ -91,7 +91,7 @@
         }
 
         /* =============================================
-           HERO SECTION
+           HERO SECTION (Modifiée avec image de fond PCB)
         ============================================= */
         .hero {
             position: relative;
@@ -100,26 +100,38 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            background-image: url('Background_Home.jpg');
-            background-size: cover;
-            background-position: center;
+            background-color: var(--bg); /* Couleur de fond de base */
         }
 
+        /* Pseudo-élément pour gérer l'image de fond et son opacité très faible */
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('Blue PCB background.webp'); /* Ton image PCB */
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15; /* Opacité très faible (8%) */
+            z-index: 1; /* Derrière le dégradé et le texte */
+        }
+
+        /* Le dégradé existant pour la lisibilité du texte */
         .hero::before {
             content: "";
             position: absolute;
             inset: 0;
             background: linear-gradient(
                 160deg,
-                rgba(33,33,34,0.90) 0%,
-                rgba(33,33,34,0.60) 50%,
-                rgba(77,84,218,0.15) 100%
+                rgba(33,33,34,0.95) 0%, /* Légèrement plus sombre en haut */
+                rgba(33,33,34,0.80) 50%,
+                rgba(77,84,218,0.20) 100%
             );
+            z-index: 2; /* Devant l'image, derrière le texte */
         }
 
         .hero-inner {
             position: relative;
-            z-index: 1;
+            z-index: 10; /* Force le texte tout devant */
             max-width: 800px;
             padding: 40px 24px;
             text-align: center;
@@ -287,7 +299,7 @@
             padding: 16px 18px;
             display: flex;
             flex-direction: column;
-            flex-grow: 1; /* Permet au tag de rester en bas */
+            flex-grow: 1;
         }
 
         .project-card-title {
@@ -300,7 +312,7 @@
             font-size: 0.75rem;
             color: var(--text-dim);
             line-height: 1.6;
-            flex-grow: 1; /* Pousse le tag vers le bas */
+            flex-grow: 1;
         }
 
         .project-card-tag {
@@ -333,39 +345,36 @@
         }
 
         /* =============================================
-           À PROPOS
+           À PROPOS (Photo ronde)
         ============================================= */
         .about-grid {
             display: grid;
-            grid-template-columns: 1fr 1.6fr;
-            gap: 60px;
+            grid-template-columns: 220px 1fr;
+            gap: 50px;
             align-items: center;
-        }
-
-        @media (max-width: 768px) {
-            .about-grid { grid-template-columns: 1fr; }
         }
 
         .about-photo {
             position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto;
         }
 
         .about-photo img {
             width: 100%;
-            border-radius: 12px;
+            height: 100%;
+            border-radius: 50%;
             object-fit: cover;
-            aspect-ratio: 3/4;
             display: block;
-            box-shadow: 0 0 8px rgba(77,84,218,0.3), 0 0 40px rgba(0,0,0,0.6);
+            border: 2px solid rgba(77,84,218,0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: transform 0.4s ease, border-color 0.4s ease;
         }
 
-        .about-photo::before {
-            content: "";
-            position: absolute;
-            inset: -6px;
-            border: 1px solid rgba(77,84,218,0.35);
-            border-radius: 16px;
-            pointer-events: none;
+        .about-photo img:hover {
+            transform: scale(1.03);
+            border-color: var(--accent);
         }
 
         .about-text p {
@@ -398,6 +407,13 @@
 
         .status-list li .value {
             color: var(--text-dim);
+        }
+
+        @media (max-width: 768px) {
+            .about-grid { 
+                grid-template-columns: 1fr; 
+                gap: 30px; 
+            }
         }
 
         /* =============================================
@@ -482,23 +498,13 @@
         </div>
     </div>
 
-    <section id="projects">
-        <div class="section-label">// travaux récents</div>
-        <h2 class="section-title">Derniers projets</h2>
-        
-        <div class="projects-grid" id="portfolio-grid"></div>
-        
-    </section>
-
-    <hr class="section-divider">
-
     <section id="about">
         <div class="section-label">// qui suis-je ?</div>
         <h2 class="section-title">À mon propos</h2>
 
         <div class="about-grid">
             <div class="about-photo">
-                <img src="1000019410 (1).jpg" alt="Andréas Saussier">
+                <img src="DSC_3280.jpg" alt="Andréas Saussier">
             </div>
             <div class="about-text">
                 <p>
@@ -539,6 +545,16 @@
         </div>
     </section>
 
+    <hr class="section-divider">
+
+    <section id="projects">
+        <div class="section-label">// travaux récents</div>
+        <h2 class="section-title">Derniers projets</h2>
+        
+        <div class="projects-grid" id="portfolio-grid"></div>
+        
+    </section>
+
     <div class="contact-strip">
         <div class="contact-strip-inner">
             <h2>Envie de <span>travailler ensemble</span>&nbsp;?</h2>
@@ -550,107 +566,41 @@
         © 2026 Andréas Saussier — Portfolio
     </footer>
 
+    <script src="projets.js"></script>
+    
     <script>
-        // 1. Déclaration de tes données projets
-        const projets = [
-            {
-                titre: "Montre binaire", // 
-                description: "Réalisation d'une montre affichant l'heure au format binaire avec composants logiques et batterie.", // [cite: 15]
-                imageBg: "V1_final-min.png", // Pense à mettre les bonnes images
-                tag: "Logique · PCB",
-                link: "projet_montre.html"
-            },
-            {
-                titre: "Bras robotique", // [cite: 39]
-                description: "Bras robotique imprimé en 3D capable de saisir des objets jusqu'à 250g, contrôlé par STM32.", // [cite: 40, 47]
-                imageBg: "V1_final-min.png",
-                tag: "STM32 · 3D",
-                link: "projet_bras.html"
-            },
-            {
-                titre: "Kart électrique", // [cite: 57]
-                description: "Kart propulsé par des moteurs d'hoverboard, commandé par un Arduino Nano avec un châssis en bois.", // [cite: 66, 68, 70]
-                imageBg: "V1_final-min.png",
-                tag: "Arduino · Méca",
-                link: "projet_kart.html"
-            },
-            {
-                titre: "Jeux Snake", // [cite: 84]
-                description: "Jeu Snake fait maison codé sur un XIAO-ESP32-C3 et affiché sur une matrice LED 8x8.", // [cite: 92, 93]
-                imageBg: "V1_final-min.png",
-                tag: "ESP32 · C++",
-                link: "projet_snake.html"
-            },
-            {
-                titre: "Enrouleur de filament", // [cite: 105]
-                description: "Machine pour bobiner automatiquement du PLA, modélisée sur SolidWorks et contrôlée par STM32.", // [cite: 111, 114, 121]
-                imageBg: "V1_final-min.png",
-                tag: "STM32 · 3D",
-                link: "projet_enrouleur.html"
-            },
-            {
-                titre: "Horloge numérique", // [cite: 128]
-                description: "Horloge 4 digits au style rétro sans microcontrôleur, utilisant uniquement des composants logiques.", // [cite: 134]
-                imageBg: "V1_final-min.png",
-                tag: "Logique · 7 Seg",
-                link: "projet_horloge.html"
-            },
-            {
-                titre: "Testeur de batterie", // [cite: 144]
-                description: "Testeur universitaire qui allume différentes LED en fonction de la tension de la batterie mesurée.", // [cite: 149, 150]
-                imageBg: "V1_final-min.png",
-                tag: "Analogique",
-                link: "projet_testeur.html"
-            },
-            {
-                titre: "Dé électronique", // [cite: 193]
-                description: "Dé 100% analogique générant un chiffre aléatoire de 1 à 6 sur un afficheur 7 segments.", // [cite: 198, 199, 203]
-                imageBg: "V1_final-min.png",
-                tag: "Analogique",
-                link: "projet_de.html"
-            },
-            {
-                titre: "Robot suiveur de ligne", // [cite: 212]
-                description: "Carte électronique de commande analogique pour un robot suiveur de ligne utilisant des capteurs infrarouges.", // [cite: 217, 239]
-                imageBg: "V1_final-min.png",
-                tag: "Analogique",
-                link: "projet_suiveur.html"
-            },
-            {
-                titre: "Façade PC Giger", // 
-                description: "Conception et impression 3D d'une fresque personnalisée style Alien pour la façade d'un boîtier PC.", // [cite: 251, 260]
-                imageBg: "V1_final-min.png",
-                tag: "Blender · 3D",
-                link: "projet_facade.html"
-            }
-        ];
-
-        // 2. Cibler le conteneur dans le HTML
         const conteneurProjets = document.getElementById('portfolio-grid');
         let htmlGenere = '';
 
-        // 3. Boucler sur la liste pour générer le code de chaque carte
-        projets.forEach(projet => {
+        // On trie le tableau pour avoir les ID les plus grands en premier, puis on en garde 3
+        const projetsRecents = projects.sort((a, b) => b.id - a.id).slice(0, 3);
+
+        projetsRecents.forEach(projet => {
+            // On récupère les 2 premiers tags pour ne pas surcharger la carte d'accueil
+            const tagsAffiches = projet.tags ? projet.tags.slice(0, 2).join(' · ') : '';
+            
+            // On met l'image principale (oufallback si elle manque)
+            const imgUrl = projet.mainImage ? projet.mainImage : '';
+
             htmlGenere += `
-                <a class="project-card" href="${projet.link}">
-                    <img src="${projet.imageBg}" alt="${projet.titre}">
+                <a class="project-card" href="projets.html">
+                    <img src="${imgUrl}" alt="${projet.title}">
                     <div class="project-card-body">
-                        <div class="project-card-title">${projet.titre}</div>
-                        <div class="project-card-desc">${projet.description}</div>
-                        <span class="project-card-tag">${projet.tag}</span>
+                        <div class="project-card-title">${projet.title}</div>
+                        <div class="project-card-desc">${projet.excerpt}</div>
+                        <span class="project-card-tag">${tagsAffiches}</span>
                     </div>
                 </a>
             `;
         });
 
-        // 4. Ajouter la carte "Voir tous les projets" à la fin
+        // La carte pour voir le reste
         htmlGenere += `
-            <a class="project-card more" href="#">
+            <a class="project-card more" href="projets.html">
                 <span>→ Voir tous les projets</span>
             </a>
         `;
 
-        // 5. Injecter le tout dans la page
         conteneurProjets.innerHTML = htmlGenere;
     </script>
 </body>
