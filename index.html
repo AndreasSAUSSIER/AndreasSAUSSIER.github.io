@@ -240,7 +240,6 @@
             margin-bottom: 48px;
         }
 
-        /* Ligne décorative */
         .section-title::after {
             content: "";
             display: block;
@@ -286,6 +285,9 @@
 
         .project-card-body {
             padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Permet au tag de rester en bas */
         }
 
         .project-card-title {
@@ -298,10 +300,11 @@
             font-size: 0.75rem;
             color: var(--text-dim);
             line-height: 1.6;
+            flex-grow: 1; /* Pousse le tag vers le bas */
         }
 
         .project-card-tag {
-            display: inline-block;
+            display: inline-table;
             margin-top: 12px;
             font-size: 0.65rem;
             padding: 3px 10px;
@@ -309,9 +312,9 @@
             background: rgba(77,84,218,0.2);
             color: var(--accent);
             border: 1px solid rgba(77,84,218,0.3);
+            align-self: flex-start;
         }
 
-        /* Carte "voir plus" */
         .project-card.more {
             align-items: center;
             justify-content: center;
@@ -356,7 +359,6 @@
             box-shadow: 0 0 8px rgba(77,84,218,0.3), 0 0 40px rgba(0,0,0,0.6);
         }
 
-        /* cadre décoratif */
         .about-photo::before {
             content: "";
             position: absolute;
@@ -399,7 +401,7 @@
         }
 
         /* =============================================
-           CONTACT SECTION (aperçu)
+           CONTACT SECTION
         ============================================= */
         .contact-strip {
             margin: 0;
@@ -452,21 +454,19 @@
 </head>
 <body>
 
-    <!-- ===== NAVIGATION ===== -->
     <header>
         <nav>
             <div class="nav-logo">AS.</div>
             <ul>
                 <li><a href="index.html" class="active">Accueil</a></li>
                 <li><a href="#about">À propos</a></li>
-                <li><a href="#projects">Projets</a></li>
+                <li><a href="projets.html" >Projets</a></li>
                 <li><a href="formation.html">Formation</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- ===== HERO ===== -->
     <div class="hero">
         <div class="hero-inner">
             <div class="hero-tag">Étudiant GEII — ESE</div>
@@ -482,71 +482,22 @@
         </div>
     </div>
 
-    <!-- ===== PROJETS ===== -->
     <section id="projects">
         <div class="section-label">// travaux récents</div>
         <h2 class="section-title">Derniers projets</h2>
-
-        <div class="projects-grid">
-
-            <!-- Carte projet 1 — remplace src, href, title, desc, tag -->
-            <a class="project-card" href="#">
-                <img src="V1_final-min.png" alt="Liminal Space">
-                <div class="project-card-body">
-                    <div class="project-card-title">Liminal Space</div>
-                    <div class="project-card-desc">Scène 3D réalisée sous Blender, rendu photoréaliste.</div>
-                    <span class="project-card-tag">Blender · 3D</span>
-                </div>
-            </a>
-
-            <!-- Carte projet 2 -->
-            <a class="project-card" href="#">
-                <img src="V1_final-min.png" alt="Projet 2">
-                <div class="project-card-body">
-                    <div class="project-card-title">Projet 2</div>
-                    <div class="project-card-desc">Description courte du projet ici.</div>
-                    <span class="project-card-tag">Electronique</span>
-                </div>
-            </a>
-
-            <!-- Carte projet 3 -->
-            <a class="project-card" href="#">
-                <img src="V1_final-min.png" alt="Projet 3">
-                <div class="project-card-body">
-                    <div class="project-card-title">Projet 3</div>
-                    <div class="project-card-desc">Description courte du projet ici.</div>
-                    <span class="project-card-tag">Embarqué</span>
-                </div>
-            </a>
-
-            <!-- Carte projet 4 -->
-            <a class="project-card" href="#">
-                <img src="V1_final-min.png" alt="Projet 4">
-                <div class="project-card-body">
-                    <div class="project-card-title">Projet 4</div>
-                    <div class="project-card-desc">Description courte du projet ici.</div>
-                    <span class="project-card-tag">Adobe · Vidéo</span>
-                </div>
-            </a>
-
-            <!-- Voir plus -->
-            <a class="project-card more" href="#">
-                <span>→ Voir tous les projets</span>
-            </a>
-
-        </div>
+        
+        <div class="projects-grid" id="portfolio-grid"></div>
+        
     </section>
 
     <hr class="section-divider">
 
-    <!-- ===== À PROPOS ===== -->
     <section id="about">
         <div class="section-label">// qui suis-je ?</div>
         <h2 class="section-title">À mon propos</h2>
 
         <div class="about-grid">
             <div class="about-photo">
-                <!-- Remplace le src par ta photo -->
                 <img src="1000019410 (1).jpg" alt="Andréas Saussier">
             </div>
             <div class="about-text">
@@ -588,7 +539,6 @@
         </div>
     </section>
 
-    <!-- ===== BANDEAU CONTACT ===== -->
     <div class="contact-strip">
         <div class="contact-strip-inner">
             <h2>Envie de <span>travailler ensemble</span>&nbsp;?</h2>
@@ -596,10 +546,112 @@
         </div>
     </div>
 
-    <!-- ===== FOOTER ===== -->
     <footer>
-        © 2025 Andréas Saussier — Portfolio
+        © 2026 Andréas Saussier — Portfolio
     </footer>
 
+    <script>
+        // 1. Déclaration de tes données projets
+        const projets = [
+            {
+                titre: "Montre binaire", // 
+                description: "Réalisation d'une montre affichant l'heure au format binaire avec composants logiques et batterie.", // [cite: 15]
+                imageBg: "V1_final-min.png", // Pense à mettre les bonnes images
+                tag: "Logique · PCB",
+                link: "projet_montre.html"
+            },
+            {
+                titre: "Bras robotique", // [cite: 39]
+                description: "Bras robotique imprimé en 3D capable de saisir des objets jusqu'à 250g, contrôlé par STM32.", // [cite: 40, 47]
+                imageBg: "V1_final-min.png",
+                tag: "STM32 · 3D",
+                link: "projet_bras.html"
+            },
+            {
+                titre: "Kart électrique", // [cite: 57]
+                description: "Kart propulsé par des moteurs d'hoverboard, commandé par un Arduino Nano avec un châssis en bois.", // [cite: 66, 68, 70]
+                imageBg: "V1_final-min.png",
+                tag: "Arduino · Méca",
+                link: "projet_kart.html"
+            },
+            {
+                titre: "Jeux Snake", // [cite: 84]
+                description: "Jeu Snake fait maison codé sur un XIAO-ESP32-C3 et affiché sur une matrice LED 8x8.", // [cite: 92, 93]
+                imageBg: "V1_final-min.png",
+                tag: "ESP32 · C++",
+                link: "projet_snake.html"
+            },
+            {
+                titre: "Enrouleur de filament", // [cite: 105]
+                description: "Machine pour bobiner automatiquement du PLA, modélisée sur SolidWorks et contrôlée par STM32.", // [cite: 111, 114, 121]
+                imageBg: "V1_final-min.png",
+                tag: "STM32 · 3D",
+                link: "projet_enrouleur.html"
+            },
+            {
+                titre: "Horloge numérique", // [cite: 128]
+                description: "Horloge 4 digits au style rétro sans microcontrôleur, utilisant uniquement des composants logiques.", // [cite: 134]
+                imageBg: "V1_final-min.png",
+                tag: "Logique · 7 Seg",
+                link: "projet_horloge.html"
+            },
+            {
+                titre: "Testeur de batterie", // [cite: 144]
+                description: "Testeur universitaire qui allume différentes LED en fonction de la tension de la batterie mesurée.", // [cite: 149, 150]
+                imageBg: "V1_final-min.png",
+                tag: "Analogique",
+                link: "projet_testeur.html"
+            },
+            {
+                titre: "Dé électronique", // [cite: 193]
+                description: "Dé 100% analogique générant un chiffre aléatoire de 1 à 6 sur un afficheur 7 segments.", // [cite: 198, 199, 203]
+                imageBg: "V1_final-min.png",
+                tag: "Analogique",
+                link: "projet_de.html"
+            },
+            {
+                titre: "Robot suiveur de ligne", // [cite: 212]
+                description: "Carte électronique de commande analogique pour un robot suiveur de ligne utilisant des capteurs infrarouges.", // [cite: 217, 239]
+                imageBg: "V1_final-min.png",
+                tag: "Analogique",
+                link: "projet_suiveur.html"
+            },
+            {
+                titre: "Façade PC Giger", // 
+                description: "Conception et impression 3D d'une fresque personnalisée style Alien pour la façade d'un boîtier PC.", // [cite: 251, 260]
+                imageBg: "V1_final-min.png",
+                tag: "Blender · 3D",
+                link: "projet_facade.html"
+            }
+        ];
+
+        // 2. Cibler le conteneur dans le HTML
+        const conteneurProjets = document.getElementById('portfolio-grid');
+        let htmlGenere = '';
+
+        // 3. Boucler sur la liste pour générer le code de chaque carte
+        projets.forEach(projet => {
+            htmlGenere += `
+                <a class="project-card" href="${projet.link}">
+                    <img src="${projet.imageBg}" alt="${projet.titre}">
+                    <div class="project-card-body">
+                        <div class="project-card-title">${projet.titre}</div>
+                        <div class="project-card-desc">${projet.description}</div>
+                        <span class="project-card-tag">${projet.tag}</span>
+                    </div>
+                </a>
+            `;
+        });
+
+        // 4. Ajouter la carte "Voir tous les projets" à la fin
+        htmlGenere += `
+            <a class="project-card more" href="#">
+                <span>→ Voir tous les projets</span>
+            </a>
+        `;
+
+        // 5. Injecter le tout dans la page
+        conteneurProjets.innerHTML = htmlGenere;
+    </script>
 </body>
 </html>
