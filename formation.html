@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Formation & Parcours — Andréas Saussier</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:           #212122;
+            --bg-dark:      #1a1a1b;
+            --accent:       #4d54da;
+            --accent-hover: #4145bb;
+            --text:         #ffffff;
+            --text-dim:     #a0a0b0;
+            --card-bg:      #2a2a2c;
+            --font:         'JetBrains Mono', monospace;
+            
+            /* Couleurs pour les tags de la timeline */
+            --tag-school:   #4d54da; /* Bleu */
+            --tag-stage:    #22c55e; /* Vert */
+            --tag-job:      #f59e0b; /* Orange */
+            --tag-future:   #a855f7; /* Violet */
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font);
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ===== NAVIGATION ===== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--bg-dark);
+            border-bottom: 1px solid rgba(77,84,218,0.25);
+            backdrop-filter: blur(8px);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(77,84,218,0.6);
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 8px;
+        }
+
+        nav ul li a {
+            display: inline-block;
+            padding: 6px 18px;
+            font-size: 0.75rem;
+            font-family: var(--font);
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+            background-color: var(--accent);
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            background-color: var(--accent-hover);
+            transform: scale(1.08);
+            box-shadow: 0 0 6px var(--accent), 0 0 20px rgba(77,84,218,0.45);
+        }
+
+        /* ===== HERO ===== */
+        .page-hero {
+            position: relative;
+            min-height: 250px;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .page-hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 20% 50%, rgba(77,84,218,0.15) 0%, transparent 70%);
+        }
+
+        .page-hero-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+
+        .page-tag {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .page-hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        /* ===== TIMELINE ===== */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 24px 80px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px; /* Espace pour la ligne */
+        }
+
+        /* La grande ligne verticale */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 11px; /* Centré par rapport au point */
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent) 0%, rgba(77,84,218,0.1) 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        /* Le point sur la ligne */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -40px;
+            top: 24px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 10px rgba(77,84,218,0.4);
+            z-index: 2;
+        }
+
+        /* Style spécial pour le point "La suite" */
+        .timeline-item.future::before {
+            border-color: var(--tag-future);
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+            background-color: transparent;
+            border-style: dashed;
+        }
+
+        /* Boîte de contenu */
+        .timeline-content {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(77,84,218,0.15);
+            border-radius: 14px;
+            padding: 24px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .timeline-item.future .timeline-content {
+            border-style: dashed;
+            border-color: rgba(168, 85, 247, 0.4);
+            background-color: transparent;
+        }
+
+        .timeline-content:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border-color: rgba(77,84,218,0.4);
+        }
+
+        .timeline-item.future .timeline-content:hover {
+            border-color: var(--tag-future);
+        }
+
+        /* En-tête de la carte (Titre + Tag) */
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.3;
+        }
+
+        .timeline-meta {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        /* Étiquettes */
+        .badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 100px;
+            border: 1px solid;
+            flex-shrink: 0;
+        }
+
+        .badge-school { color: var(--tag-school); border-color: var(--tag-school); background: rgba(77,84,218,0.1); }
+        .badge-stage  { color: var(--tag-stage); border-color: var(--tag-stage); background: rgba(34,197,94,0.1); }
+        .badge-job    { color: var(--tag-job); border-color: var(--tag-job); background: rgba(245,158,11,0.1); }
+        .badge-future { color: var(--tag-future); border-color: var(--tag-future); background: rgba(168, 85, 247, 0.1); }
+
+        /* Texte (blabla) */
+        .timeline-body p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.7;
+        }
+
+        .timeline-body p + p {
+            margin-top: 10px;
+        }
+
+        /* ===== COMPÉTENCES (UE) ===== */
+        .ue-container {
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px dashed rgba(255,255,255,0.1);
+        }
+
+        .ue-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .ue-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .ue-tag {
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 6px;
+            background: rgba(77, 84, 218, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(77, 84, 218, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            nav ul { display: none; }
+            .timeline { padding-left: 24px; }
+            .timeline::before { left: 4px; }
+            .timeline-item::before { left: -27px; width: 16px; height: 16px; top: 28px; border-width: 2px; }
+            .timeline-content { padding: 16px; }
+            .timeline-header { flex-direction: column; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="index.html" class="nav-logo">AS.</a>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="index.html#about">À propos</a></li>
+                <li><a href="projets.html">Projets</a></li>
+                <li><a href="formation.html" class="active">Formation</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="page-hero">
+        <div class="page-hero-inner">
+            <div class="page-tag">// Mon histoire</div>
+            <h1>Parcours professionnel<br>et académique</h1>
+        </div>
+    </div>
+
+    <main>
+        <div class="timeline">
+
+            <div class="timeline-item future">
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h3 class="timeline-title">La suite ???</h3>
+                        <span class="badge badge-future">À venir</span>
+                    </div>
+                    <div class="timeline-meta">Bientôt...</div>
+                    <div class="timeline-body">
+                        <p>Suite a un avis favorable de mon IUT, je souhaite poursuivre mes études en école d'ingénieur, en apprentissage, dans le domaine des systèmes embarqués.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h3 class="timeline-title">Stage chez Neurogreen (Étranger)</h3>
+                        <span class="badge badge-stage">Stage - 16 sem.</span>
+                    </div>
+                    <div class="timeline-meta">Jan - Mai 2026</div>
+                    <div class="timeline-body">
+                        <p>j’ai décidé de réaliser mon stage de fin de BUT à l’étranger, mes motivations étaient multiple :
+                            <br>• l’IUT offrait cette possibilité et je les ai vues comme une occasion à saisir
+                            <br>• Le challenge (trouver un stage, un logement, …) qui représente une grande fierté une fois
+                                aboutie
+                            <br>• Et enfin pour l’expérience, le changement de routine, et la découverte de nouvelle chose.
+                        </p>
+                        <p>
+                            Mes mission on été : 
+                            <br> Concevoir intégralement un prototype effectuant des mesures d'induction pulsée et intégrant un LLM local, sa partie électronique ainsi que la programmation du système entier, en partant de zéro. 
+                            <br> Continuez le développement du système de surveillance autonome permettant la reconnaissance d'objet grâce à une IA locale. 
+                        </p>
+                        <div class="ue-container">
+                            <div class="ue-title">Compétences utilisé (UE)</div>
+                            <div class="ue-grid">
+                                <span class="ue-tag">Concevoir</span>
+                                <span class="ue-tag">Maintenir</span>
+                                <span class="ue-tag">Implémenter</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h3 class="timeline-title">Vendeur en boulangerie</h3>
+                        <span class="badge badge-job">Job étudiant</span>
+                    </div>
+                    <div class="timeline-meta">Nov - Janv 2026</div>
+                    <div class="timeline-body">
+                        <p>Vendeur et gestion d'une boulangerie spécialisé dans la fougasse a Aigues mortes, le but de ce job a temps partiel était de financé mon stage en Belgique.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h3 class="timeline-title">BUT 3 GEII — Spécialité ESE</h3>
+                        <span class="badge badge-school">Formation</span>
+                    </div>
+                    <div class="timeline-meta">IUT / Université — En cours</div>
+                    <div class="timeline-body">
+                        <p>Dernière année du cycle d'ingénierie technique avec une spécialisation poussée en Électronique et Systèmes Embarqués (ESE). Approfondissement de la conception de cartes, du routage avancé et de la programmation sur microcontrôleurs.</p>
+                        <p>Cette année met l'accent sur la gestion de projets complexes, l'autonomie et l'intégration de systèmes complets, préparant directement à l'insertion professionnelle ou à la poursuite d'études en école d'ingénieurs.</p>
+                        <div class="ue-container">
+                            <div class="ue-title">Compétences validées (UE)</div>
+                            <div class="ue-grid">
+                                <span class="ue-tag">Concevoir</span>
+                                <span class="ue-tag">Vérifier</span>
+                                <span class="ue-tag">Maintenir</span>
+                                <span class="ue-tag">Implémenter</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h3 class="timeline-title">Café de la Bourse</h3>
+                        <span class="badge badge-job">Job saisonnier</span>
+                    </div>
+                    <div class="timeline-meta">Été 2025</div>
+                    <div class="timeline-body">
+                        <p>Je m'occupais à la fois du bar et de la plonge au café de la Bourse.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h3 class="timeline-title">Stage au LIRMM</h3>
+                        <span class="badge badge-stage">Stage - 10 sem.</span>
+                    </div>
+                    <div class="timeline-meta">Janv - Mars 2025</div>
+                    <div class="timeline-body">
+                        <p>Spectroscopie de bio-impédance pour l’évaluation de la fatigue musculaire</p>
+                        <p>
+                        Le sujet proposé s’intègre dans le contexte général des travaux menés depuis plusieurs années au sein de l’équipe SMARTIES du département de Microélectronique sur le développement d’un système innovant de spectroscopie de bio-impédance. Le principe consiste à estimer l’impédance d’un tissu biologique en mesurant la tension électrique entre deux électrodes en contact avec un tissu biologique stimulé par un courant de faible intensité. La réponse du tissu biologique va dépendre de la fréquence du signal qui le traverse pendant la mesure. Une mesure à différentes fréquences, ou spectroscopie de bio-impédance, permet ainsi d’avoir une signature électrophysiologique complète représentative du comportement global du tissu biologique analysé.
+                        </p>
+                        <p>
+                        Le système existant repose sur une puce originale développée au laboratoire qui permet de réaliser une mesure ultra-rapide (quelques millisecondes) sur plusieurs fréquences simultanées comprises entre 250Hz-125kHz. Ce système est actuellement utilisé pour réaliser des mesures locales transcutanées (électrodes posées sur la peau) sur une personne en activité afin d’étudier le lien entre la signature électrique collectée et la fatigue musculaire.
+                        </p>
+                        <p>L’objectif de ce stage est d’adapter le système existant pour permettre la réalisation de mesures in-vitro sur un échantillon de muscle du diaphragme prélevé chez une soumis et soumis à un exercice de fatigue. Il s’agira dans un premier temps de développer un support spécifique pour pouvoir positionner des électrodes BIA au plus proche de l’échantillon de muscle à mesurer (impression 3D). Dans un deuxième temps, des mesures seront réalisées en utilisant le support développé dans une solution tampon, afin de d’étudier quelle est la gamme mesurable d’impédance et quelles sont les dimensions et positions des électrodes les plus adaptées.</p>
+                        <div class="ue-container">
+                            <div class="ue-title">Compétences utilisé (UE)</div>
+                            <div class="ue-grid">
+                                <span class="ue-tag">Concevoir</span>
+                                <span class="ue-tag">Implémenter</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h3 class="timeline-title">BUT 2 GEII — Spécialité ESE</h3>
+                        <span class="badge badge-school">Formation</span>
+                    </div>
+                    <div class="timeline-meta">IUT / Université — 2024 - 2025</div>
+                    <div class="timeline-body">
+                        <p>Consolidation des acquis fondamentaux et début de la spécialisation. Réalisation de projets concrets alliant conception mécanique 3D, électronique de puissance et développement logiciel embarqué (STM32, Arduino).</p>
+                        <p>Apprentissage approfondi des outils de CAO (KiCad, SolidWorks) et de l'instrumentation. Travail en équipe sur des systèmes autonomes et communicants.</p>
+                        <div class="ue-container">
+                            <div class="ue-title">Compétences validées (UE)</div>
+                            <div class="ue-grid">
+                                <span class="ue-tag">Concevoir</span>
+                                <span class="ue-tag">Vérifier</span>
+                                <span class="ue-tag">Maintenir</span>
+                                <span class="ue-tag">Implémenter</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h3 class="timeline-title">Camping Yelloh! Village</h3>
+                        <span class="badge badge-job">Job saisonnier</span>
+                    </div>
+                        <div class="timeline-meta">Été 2024</div>
+                        <div class="timeline-body">
+                            <p>
+                                Chargé de la distribution des draps propres au sein du camping, de l'entretien du matériel ménager, ainsi que du tri des draps sales. 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h3 class="timeline-title">BUT 1 GEII</h3>
+                        <span class="badge badge-school">Formation</span>
+                    </div>
+                    <div class="timeline-meta">IUT / Université — 2023 - 2024</div>
+                    <div class="timeline-body">
+                        <p>Découverte du Génie Électrique et de l'Informatique Industrielle. Acquisition des bases mathématiques et physiques nécessaires à la compréhension des circuits électriques et électroniques.</p>
+                        <p>Premiers pas en programmation (C/C++), logique combinatoire/séquentielle, et réalisation de premières maquettes analogiques (comme le suiveur de ligne ou le testeur de batterie).</p>
+                        <div class="ue-container">
+                            <div class="ue-title">Compétences validées (UE)</div>
+                            <div class="ue-grid">
+                                <span class="ue-tag">Concevoir</span>
+                                <span class="ue-tag">Vérifier</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h3 class="timeline-title">Baccalauréat STI2D</h3>
+                        <span class="badge badge-school">Formation</span>
+                    </div>
+                    <div class="timeline-meta">Lycée — Obtenu en 2023</div>
+                    <div class="timeline-body">
+                        <p>Au vu de mes passions, j'ai choisi à la fin de ma seconde de continuer en STI2D. Puis, en terminale, j'ai choisi la spécialité SIN (Système d'Information Numérique).</p>
+                        <p>Grâce à cette STI2D, j'ai pu obtenir de solides bases en programmation, électronique, logique combinatoire qui m'ont été d'une grande utilité dans la suite de mon parcours. De plus, j'ai pu découvrir plein de domaines intéressants comme la modélisation, l'architecture, l'énergie...
+                            De plus, j'ai pu obtenir mon bac avec une mention très bien, ce qui, pour moi, confirme que c'était le bon choix.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer style="text-align: center; padding: 32px 24px; font-size: 0.7rem; color: var(--text-dim); border-top: 1px solid rgba(255,255,255,0.06);">
+        © 2026 Andréas Saussier — Portfolio
+    </footer>
+
+</body>
+</html>
