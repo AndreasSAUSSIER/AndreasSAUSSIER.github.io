@@ -14,6 +14,7 @@ const projects = [
         status: "done",
         tags: ["3D / Impression"],
         excerpt: "Nouvelle façade pour un Corsair 3000D, avec fresque sculptée sous Blender dans le style de H.R. Giger (Alien/Xénomorphe). 6 pièces imprimées en 3D, ~80h d'impression.",
+       youtubeId: "f1V_PzVXSBw",
         mainImage: "Boitier_Alien_0.gif",
         images: [
             "Boitier_Alien_Main.jpg",
